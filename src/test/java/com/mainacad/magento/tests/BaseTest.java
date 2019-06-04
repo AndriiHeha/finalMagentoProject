@@ -5,13 +5,11 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
 
 public class BaseTest {
 
-    @BeforeClass
+    @BeforeMethod(alwaysRun = true)
     public void setup() {
         //Create a Chrome driver. All test classes use this.
         WebDriverManager.chromedriver().setup();
@@ -23,7 +21,7 @@ public class BaseTest {
         BasePage.setDriver(driver);
     }
 /*
-    @AfterMethod
+    @AfterMethod(alwaysRun = true)
     public void teardown() {
         if (BasePage.getDriver() != null) {
             BasePage.getDriver().close();
