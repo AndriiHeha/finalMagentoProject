@@ -9,11 +9,11 @@ public class HomeDecorPage extends BasePage {
 
     //*********Constructor*********
     public HomeDecorPage() {
-        Assert.assertEquals(driver.getTitle(), "Home & Decor");
+        Assert.assertEquals(getDriver().getTitle(), "Home & Decor");
     }
     //*********** Go To Electronics Page *************
     public ElectronicsPage goToElectronicsPage() {
-        driver.findElement(elementElectronics).click();
+        getDriver().findElement(elementElectronics).click();
         return new ElectronicsPage();
     }
 }

@@ -19,7 +19,6 @@ public class Tests extends BaseTest {
 
     private static ElectronicsPage electronicsPage;
 
-
     //***********Test Case 1. Check Items counter:*************
     @BeforeMethod(alwaysRun = true, dependsOnMethods = "setup")
     public void setLanguageAutomation() {
@@ -54,15 +53,4 @@ public class Tests extends BaseTest {
         new ElectronicsPage().testCaseFourCheckPriceFilter(SHOW_TWENTY_FIVE_ITEMS_ON_PAGE,LIMIT_PRICE);
 
     }
-/*
-    @Test (priority = 5)
-    //***********Go to login page, login and check if user loged in**********
-    public void goToLoginPage() throws InterruptedException {
-        new HomePage().goToLoginPage()
-                .userLogin(emailAddress,userPassword)
-                .checkIfUserLogedIn(firstName, lastName);
-                //.setLanguageAutomation();
-    }
-*/
-
 }

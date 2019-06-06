@@ -6,13 +6,20 @@ import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 
 import java.util.List;
+import java.util.Random;
 
 public class ElectronicsPage extends BasePage {
     //*********Web Elements*********
     private static By elementListAll = By.className("list");
     private static By elementDropDownShow = By.xpath("//*[@id=\"top\"]/body/div/div/div[2]/div/div[2]/div[2]/div[2]/div[1]/div[2]/div[1]/div/select");
+
     private static By elementProductList = By.id("products-list");
-    private static By allElementsInProductList = By.className("product-image");
+    private static By elementAllLiInProductList = By.tagName("li");
+    private static By elementWishListButton = By.className("link-wishlist");
+    private static By elementProductName = By.tagName("h2");
+    //private static By elementProductName = By.className("product-name");
+
+    //private static By elementAllLiInProductList = By.className("product-image");
     private static By elementItemCounter = By.xpath("//*[@id=\"top\"]/body/div/div/div[2]/div/div[2]/div[2]/div[2]/div[1]/div[2]/div/p/strong");
     private static By elementNextPagesButton = By.xpath("//*[@class='next i-next']");
     private static By listSizeSelection = By.xpath("//select[@title='Results per page'][1]");
@@ -22,37 +29,33 @@ public class ElectronicsPage extends BasePage {
 
     private static By elementShopByPrice = By.partialLinkText("$0.00 - $999.99");
 
-
-    private static By elementFromProductPrice = By.xpath("//p[@class='price-from']/span[@class='price']");
-
-
     private static String productRecordsAmount;
     private static int productRecordsAmountInt;
+    public static String nameOfProduct;
 
     //*********Constructor*********
     public ElectronicsPage() {
-        Assert.assertEquals(driver.getTitle(), "Electronics - Home & Decor");
+        Assert.assertEquals(getDriver().getTitle(), "Electronics - Home & Decor");
     }
 
     //******Page Methods********
     public ElectronicsPage setNumberOfProducts(int numberOfProducts) {
-        Select productSelect = new Select(driver.findElement(listSizeSelection));
+        Select productSelect = new Select(getDriver().findElement(listSizeSelection));
         productSelect.selectByVisibleText(String.valueOf(numberOfProducts));
         return this;
     }
-
     // ********Amount of product counter******
     private int countNumberOfProducts() {
-        return driver.findElement(elementProductList).findElements(allElementsInProductList).size();
+        return getDriver().findElement(elementProductList).findElements(elementAllLiInProductList).size();
     }
 
     public ElectronicsPage clickShowAsList() {
-        driver.findElement(elementListAll).click();
+        getDriver().findElement(elementListAll).click();
         return this;
     }
     //******check price when Sort by is Price***********
     public ElectronicsPage checkPriceSortby() {
-        WebElement productList = driver.findElement(elementProductList);
+        WebElement productList = getDriver().findElement(elementProductList);
         List<WebElement> allPriceElementsOnTheList = productList.findElements(elementRegularProductPrice);
         int prevPrice = Integer.MIN_VALUE;
         for (WebElement element : allPriceElementsOnTheList) {
@@ -70,20 +73,18 @@ public class ElectronicsPage extends BasePage {
         return this;
     }
 
-
-
     //******** Select 25 items to show on the page*************
     public ElectronicsPage selectTwentyFiveItemsToShow(int showTwentyFiveItemsOnPage) {
-        driver.findElement(elementDropDownShow).click();
-        Select selectLanguageAuto = new Select(driver.findElement(elementDropDownShow));
+        getDriver().findElement(elementDropDownShow).click();
+        Select selectLanguageAuto = new Select(getDriver().findElement(elementDropDownShow));
         selectLanguageAuto.selectByVisibleText(String.valueOf(showTwentyFiveItemsOnPage));
         return this;
     }
 
     //******** Amount of Products is shown on the page*************
     public ElectronicsPage showProductList() {
-        WebElement productList = driver.findElement(elementProductList);
-        List<WebElement> allLiElementsinTheList = productList.findElements(allElementsInProductList);
+        WebElement productList = getDriver().findElement(elementProductList);
+        List<WebElement> allLiElementsinTheList = productList.findElements(elementAllLiInProductList);
         productRecordsAmount = Integer.toString(allLiElementsinTheList.size());
         productRecordsAmountInt = allLiElementsinTheList.size();
 
@@ -92,7 +93,7 @@ public class ElectronicsPage extends BasePage {
 
     //**********Check amount of products on page when 25 items is selected*********
     public ElectronicsPage checkAmountOfProducts() {
-        String itemCounter = driver.findElement(elementItemCounter).getText();
+        String itemCounter = getDriver().findElement(elementItemCounter).getText();
         if (itemCounter.contains(" ")) {
             itemCounter = itemCounter.substring(0, itemCounter.indexOf(" "));
         }
@@ -106,9 +107,9 @@ public class ElectronicsPage extends BasePage {
         //********set to show 5 items on page ***********
         setNumberOfProducts(expectedAmount);
         //*******click on  pages and check if there are five items on it********
-        while (driver.findElements(elementNextPagesButton).size() > 0) {
+        while (getDriver().findElements(elementNextPagesButton).size() > 0) {
             Assert.assertEquals(countNumberOfProducts(), expectedAmount);
-            driver.findElement(elementNextPagesButton).click();
+            getDriver().findElement(elementNextPagesButton).click();
         }
         Assert.assertTrue(countNumberOfProducts() <= expectedAmount);
         return this;
@@ -119,22 +120,22 @@ public class ElectronicsPage extends BasePage {
         clickShowAsList();
         setNumberOfProducts(numberOfProductsToSet);
 
-        Select selectSortByPrice = new Select(driver.findElement(elementSortBy));
+        Select selectSortByPrice = new Select(getDriver().findElement(elementSortBy));
         selectSortByPrice.selectByVisibleText(sortByPrice);
         Assert.assertEquals(showProductList(), checkAmountOfProducts());
         checkPriceSortby();
         return this;
 
-
     }
     //********** Test Case 4 Check Filter Price**********
     public ElectronicsPage testCaseFourCheckPriceFilter(int expectedAmount, int limitPrice){
         clickShowAsList();
+
         //********set to show 25 items on page ***********
         setNumberOfProducts(expectedAmount);
-        driver.findElement(elementShopByPrice).click();
+        getDriver().findElement(elementShopByPrice).click();
         //******check price of product less then 1000***********
-        WebElement productList = driver.findElement(elementProductList);
+        WebElement productList = getDriver().findElement(elementProductList);
         List<WebElement> allPriceElementsOnTheList = productList.findElements(elementRegularProductPrice);
             for (WebElement element : allPriceElementsOnTheList) {
                 String priceWithOutComma = element.getText().replaceAll(",", "");
@@ -148,7 +149,18 @@ public class ElectronicsPage extends BasePage {
                 }
             }
             return this;
-        }
+       }
+    //********** Test Case 5 Check Add to Wishlist**********
+    public WishlistPage testCaseFiveAddToWishListItemsRandom(){
+        WebElement productList = getDriver().findElement(elementProductList);
+        List<WebElement> allLiInProductList = productList.findElements(elementAllLiInProductList);
+
+        Random rand = new Random();
+        WebElement randomWebElement = allLiInProductList.get(rand.nextInt(allLiInProductList.size()));
+        nameOfProduct = randomWebElement.findElement(elementProductName).getText();
+        randomWebElement.findElement(elementWishListButton).click();
+        return new WishlistPage();
+    }
 
 }
 

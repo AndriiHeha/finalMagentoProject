@@ -8,7 +8,7 @@ import org.testng.Assert;
 public class HomePage extends BasePage {
 
     //*********Web Elements*********
-    private static By accountButtonBy = By.xpath("//*[@id=\"header\"]/div/div[2]/a[3]/span[2]");
+    private static By accountButtonBy = By.xpath("//a[@href='#header-account']");
     private static By loginBy = By.linkText("Log In");
 
     private static By languageAutomation = By.id("select-language");
@@ -17,30 +17,30 @@ public class HomePage extends BasePage {
     //*********Constructor*********
     public HomePage() {
 
-        Assert.assertEquals(driver.getTitle(), "Madison Island");
+        Assert.assertEquals(getDriver().getTitle(), "Madison Island");
     }
     //*********Page Methods*********
     //*********** Set Automation Language*******
     public HomePage setLanguageAutomation(String automationOption){
-        driver.findElement(languageAutomation).click();
-        Select selectLanguageAuto = new Select(driver.findElement(languageAutomation));
+        getDriver().findElement(languageAutomation).click();
+        Select selectLanguageAuto = new Select(getDriver().findElement(languageAutomation));
         selectLanguageAuto.selectByVisibleText(automationOption);
         return this;
     }
-    //*********** Go To Home Decor Page *************
+
+   //*********** Go To Home Decor Page *************
     public HomeDecorPage goToHomeDecorPage(){
-        driver.findElement(elementHomeDecor).click();
+        getDriver().findElement(elementHomeDecor).click();
         return new HomeDecorPage();
     }
 
-/*
     //Go To Login Page
-    public LoginPage goToLoginPage() throws InterruptedException {
-        WebElement elementAccountButton = driver.findElement(accountButtonBy);
-        BasePage.highlightElement(elementAccountButton);
-        elementAccountButton.click();
-        driver.findElement(loginBy).click();
+    public LoginPage goToLoginPage() {
+        getDriver().findElement(accountButtonBy).click();
+        getDriver().findElement(loginBy).click();
         return new LoginPage();
     }
-*/
+
+
+
 }

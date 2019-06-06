@@ -15,22 +15,22 @@ public class LoginPage extends BasePage {
 
     //*********Constructor*********
     public LoginPage() {
-        Assert.assertEquals("Customer Login", driver.getTitle());
+        Assert.assertEquals(getDriver().getTitle(), "Customer Login");
     }
 
     //*********Page Methods*********
     public LoginPage userLogin(String userLogin, String userPass) {
-        driver.findElement(userLoginName).sendKeys(userLogin);
-        driver.findElement(userPassword).sendKeys(userPass);
-        driver.findElement(loginButton).click();
+        getDriver().findElement(userLoginName).sendKeys(userLogin);
+        getDriver().findElement(userPassword).sendKeys(userPass);
+        getDriver().findElement(loginButton).click();
         return this;
     }
 
-    public LoginPage checkIfUserLogedIn(String firstName, String lastName) {
-        driver.findElement(myDashBoard).isDisplayed();
-        driver.findElement(helloUser).isDisplayed();
-        Assert.assertEquals("Hello, " + firstName + " " + lastName + "!", driver.findElement(helloUser).getText());
-        return this;
+    public MyDashboardPage checkIfUserLogedIn(String firstName, String lastName) {
+        getDriver().findElement(myDashBoard).isDisplayed();
+        getDriver().findElement(helloUser).isDisplayed();
+        Assert.assertEquals("Hello, " + firstName + " " + lastName + "!", getDriver().findElement(helloUser).getText());
+        return new MyDashboardPage();
     }
 
 
